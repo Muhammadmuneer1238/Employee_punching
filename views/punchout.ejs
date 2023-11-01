@@ -1,0 +1,37 @@
+<h1>Punch Out</h1>
+<p>Username: <%= username %></p>
+
+<form action="/punchout" method="post">
+  <fieldset>
+    <legend>Select the Completed Tasks Today:</legend>
+    <% tasks.forEach(function(task) { %>
+    <label>
+      <input type="checkbox" name="selectedTasks" value="<%= task %>" />
+      <%= task.task %>
+    </label>
+    <% }); %>
+  </fieldset>
+  <button type="submit">Punch Out</button>
+</form>
+
+<script>
+  $(document).ready(function () {
+    $("form").submit(function (event) {
+      event.preventDefault();
+
+      var formData = $(this).serialize();
+
+      $.ajax({
+        type: "POST",
+        url: "/userinfo",
+        data: formData,
+        success: function (response) {
+          console.log("Data sent successfully:", response);
+        },
+        error: function (error) {
+          console.error("Error sending data:", error);
+        },
+      });
+    });
+  });
+</script>
