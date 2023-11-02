@@ -16,11 +16,11 @@ const punchSchema = new mongoose.Schema({
     {
         type: Date
     },
-    completed: [{
-        task: Array
-    }],
+    completed: [String],
     checked: {
-        type: Boolean
+        type: Boolean,
+        default: true
+       
     }
 
 });

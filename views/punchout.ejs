@@ -1,11 +1,22 @@
 <h1>Punch Out</h1>
 
 <% if (UserStatus==false) { %>
-<p>Checkin First</p>
-<button><a href="/">Punch In</a></button>
+<p>Enter Your userId and click Punch Out</p>
+<button
+  style="
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  "
+>
+  <a href="/" style="text-decoration: none; color: white">Punch In</a>
+</button>
 
 <% } else { %>
-<p>Username: <%= username %></p>
+<p id="username-element"><%= username %></p>
 
 <form action="/punchout" method="post">
   <fieldset>
@@ -26,15 +37,21 @@
   $(document).ready(function () {
     $("form").submit(function (event) {
       event.preventDefault();
-
+      var username = $("#username-element").text();
       var formData = $(this).serialize();
 
       $.ajax({
         type: "POST",
         url: "/userinfo",
-        data: formData,
+        data: {
+          formData,username,
+        },
         success: function (response) {
+          if(response.response){
+          alert("Punch out  successfully")
+          
           console.log("Data sent successfully:", response);
+          }
         },
         error: function (error) {
           console.error("Error sending data:", error);

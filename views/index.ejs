@@ -20,24 +20,27 @@
 </div>
 
 <script>
+ 
   $(document).ready(function () {
     $("#punchInButton").on("click", function (e) {
       e.preventDefault();
-      var formData = $("#punchin-form").serialize();
-      console.log("formData in ajax", formData);
-      $.ajax({
-        type: "POST",
-        url: "/punchin",
-        data: formData,
-        contentType: "application/x-www-form-urlencoded",
-        success: function (response) {
-          try {
-            alert("Punch In successful");
-          } catch (error) {
-            console.error("Error parsing JSON:", error);
-          }
-        },
-      });
+  
+    var formData = $("#punchin-form").serialize();
+    console.log("formData in ajax", formData);
+    $.ajax({
+      type: "POST",
+      url: "/punchin",
+      data: formData,
+      contentType: "application/x-www-form-urlencoded",
+      success: function (response) {
+        try {
+          alert("Punch In successful");
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      },
+    });
+  
     });
   });
 
