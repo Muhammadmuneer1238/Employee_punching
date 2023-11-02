@@ -21,13 +21,13 @@
 <form action="/punchout" method="post">
   <fieldset>
     <legend>Select the Completed Tasks Today:</legend>
-    <% tasks.forEach(function(taskSet) { %> <%
-    taskSet.task.forEach(function(task) { %>
+    <% tasks.forEach(function(task) { %> 
+    
     <label>
       <input type="checkbox" name="selectedTasks" value="<%= task %>" />
       <%= task %>
     </label>
-    <% }); %> <% }); %>
+    <% }); %> 
   </fieldset>
   <button type="submit">Punch Out</button>
 </form>

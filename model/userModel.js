@@ -6,9 +6,7 @@ const punchSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tasks: [{
-        task: Array
-    }],
+    tasks: [String],
     punchInTime: {
         type: Date
     },
@@ -20,7 +18,7 @@ const punchSchema = new mongoose.Schema({
     checked: {
         type: Boolean,
         default: true
-       
+
     }
 
 });

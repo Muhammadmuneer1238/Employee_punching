@@ -1,6 +1,6 @@
 
 const { response } = require('express');
-const { punchIn, punchOut, punchoutPage } = require('../helper/userHelper')
+const { punchIn, punchOut, punchoutPage, userDetails } = require('../helper/userHelper')
 module.exports = {
     indexedDB: (req, res) => {
         res.render('index');
@@ -11,13 +11,14 @@ module.exports = {
         let formData = req.body
         console.log("formdata", formData)
 
- 
-        punchIn(formData).then((data) => {
-            res.json({ response })
 
+        punchIn(formData).then((data) => {
+            console.log("Error from page user", data);
+
+
+            res.json(data)
 
         })
-
 
     },
     punchoutDb: (req, res) => {
@@ -45,13 +46,19 @@ module.exports = {
     userInfo: (req, res) => {
 
         let PunchOutForm = req.body
-        console.log("Detail to userInfo",PunchOutForm)
+        console.log("Detail to userInfo", PunchOutForm)
         punchOut(PunchOutForm).then((response) => {
-            res.json({response})
+            res.json({ response })
 
         })
 
+    },
+    detailPage: (req, res) => {
+        userDetails().then((activities) => {
+            console.log("activities", activities)
+            res.render('details', { activities })
+        })
 
     }
 
-}
+} 

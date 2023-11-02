@@ -2,23 +2,36 @@ const { response } = require('express');
 const userModel = require('../model/userModel');
 
 module.exports = {
-    punchIn: (data) => {
-        return new Promise((resolve, reject) => {
-            const user = new userModel({
-                username: data.username,
-                tasks: [{ task: data.task }],
-                punchInTime: new Date(),
-                checked: true
-            });
+    punchIn: async (data) => {
+        console.log("data", data)
+        let username = data.username
+        let checked = data.checked
+        console.log("check statut", checked)
 
-            user.save()
-                .then(() => {
-                    resolve();
-                })
-                .catch((error) => {
-                    reject(error);
+        let completedWork = await userModel.findOne({ $and: [{ username: username }, { checked: true }] });
+        console.log("User to punch in")
+        return new Promise((resolve, reject) => {
+            if (!completedWork) {
+
+                const user = new userModel({
+                    username: data.username,
+                    tasks: data.task,
+                    punchInTime: new Date(),
+                    checked: true
                 });
+
+                user.save()
+                resolve({ status: true })
+
+            } else {
+                resolve({ status: false })
+            }
+
         });
+
+
+
+
     },
 
 
@@ -44,10 +57,13 @@ module.exports = {
                 await userModel.updateOne({ username: username },
                     {
                         $push: {
-                            punchOutTime: new Date(),
-                            completed: tasks.map(task => task.tasks)
+
+                            completed: tasks
                         },
-                        $set: { checked: false }
+                        $set: {
+                            punchOutTime: new Date(),
+                            checked: false
+                        }
                     }
                 );
                 console.log("changed")
@@ -58,11 +74,6 @@ module.exports = {
                 resolve()
             }
         });
-
-
-
-
-
     },
 
     punchoutPage: async (data) => {
@@ -85,5 +96,15 @@ module.exports = {
             })
 
         })
+    },
+
+    userDetails: () => {
+        return new Promise(async (resolve, reject) => {
+
+            let data = await userModel.find()
+            console.log("data from all data", data)
+            resolve(data)
+        })
+
     }
 };

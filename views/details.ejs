@@ -1,0 +1,27 @@
+<h1>Punch Activity</h1>
+<table class="activity-table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Tasks</th>
+            <th>Punch In Time</th>
+            <th>Punch Out Time</th>
+            <th>Completed Tasks</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+         <% activities.forEach(function(activity) { %>
+            <tr>
+                <td><%= activity.username %></td>
+                <td><%= activity.tasks.join(', ') %></td>
+                <td><%= activity.punchInTime %></td>
+                
+                <td><%= activity.punchOutTime %></td>
+                <td><%= activity.completed.join(', ') %></td>
+               
+            </tr>
+        <% }); %>
+       
+    </tbody>
+</table>
