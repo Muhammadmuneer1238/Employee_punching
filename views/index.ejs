@@ -24,7 +24,7 @@
     $("#punchInButton").on("click", function (e) {
       e.preventDefault();
       var formData = $("#punchin-form").serialize();
-      console.log("formData", formData);
+      console.log("formData in ajax", formData);
       $.ajax({
         type: "POST",
         url: "/punchin",

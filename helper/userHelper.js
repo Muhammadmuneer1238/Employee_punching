@@ -18,18 +18,27 @@ module.exports = {
                 });
         });
     },
-    punchout: async (data) => {
+    punchOut: () => {
+
+
+
+    },
+
+    punchoutPage: async (data) => {
         let user = data.username
-        console.log("HELPER DATA.NAME",user)
+        console.log("HELPER DATA.NAME", user)
 
         return new Promise(async (resolve, reject) => {
             await userModel.findOne({ username: user }).then((userFound) => {
                 if (userFound) {
-                    console.log("userFound",userFound)
-                    resolve( userFound);
+                    console.log("userFound", userFound)
+                    resolve({ user: userFound, status: true });
 
                 } else {
-                    resolve({ status: false })
+                    resolve({ status: false })//Code for the user not found situation
+
+
+
                     // await userModel.updateOne({ username: user },
                     //     {
                     //         $push: {

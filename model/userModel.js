@@ -7,7 +7,7 @@ const punchSchema = new mongoose.Schema({
         required: true
     },
     tasks: [{
-        task: String
+        task: Array
     }],
     punchInTime: {
         type: Date
@@ -17,8 +17,12 @@ const punchSchema = new mongoose.Schema({
         type: Date
     },
     completed: [{
-        task: String
-    }]
+        task: Array
+    }],
+    checked: {
+        type: Boolean
+    }
+
 });
 
 const PunchActivity = mongoose.model("PunchActivity", punchSchema);
