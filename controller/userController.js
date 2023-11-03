@@ -54,11 +54,16 @@ module.exports = {
 
     },
     detailPage: (req, res) => {
-        userDetails().then((activities) => {
-            console.log("activities", activities)
-            res.render('details', { activities })
+        userDetails().then((activity) => {
+            let activities = activity.data
+            let time = activity.result
+ 
+            console.log("time period ", activity)
+            console.log("data", activities)
+            console.log("result", time)
+            res.render('details', {activities, time})
         })
-
+ 
     }
 
 } 

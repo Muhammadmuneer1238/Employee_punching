@@ -28,10 +28,6 @@ module.exports = {
             }
 
         });
-
-
-
-
     },
 
 
@@ -46,8 +42,7 @@ module.exports = {
             console.log('Username:', username);
             console.log('Tasks:', tasks);
 
-            // First, check if the user is found with checked: true
-            var foundUser = await userModel.findOne({ username: username, checked: true });
+            var foundUser = await userModel.findOne({ $and: [{ username: username }, { checked: true }] });
             console.log("founUser", foundUser)
 
             if (foundUser) {
@@ -78,16 +73,18 @@ module.exports = {
 
     punchoutPage: async (data) => {
         let user = data
-        console.log("HELPER DATA.NAME", user)
+        console.log("HELPER DATA.NAME", data)
 
         return new Promise(async (resolve, reject) => {
-            await userModel.findOne({ username: user }).then((userFound) => {
+            await userModel.findOne({ $and: [{ username: user }, { checked: true }] }).then((userFound) => {
                 if (userFound) {
                     console.log("userFound", userFound)
                     resolve({ user: userFound, status: true });
 
                 } else {
-                    resolve({ status: false })//Code for the user not found situation
+                    resolve({ status: false })//Hmmmm.......Code for the user not found situation 
+
+
 
 
 
@@ -102,8 +99,30 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let data = await userModel.find()
-            console.log("data from all data", data)
-            resolve(data)
+            console.log("Data from fin()",data)
+
+            const result = data.map((document) => {
+
+                const punchInTime = new Date(document.punchInTime);
+                const punchOutTime = new Date(document.punchOutTime);
+
+                if (isNaN(punchInTime) || isNaN(punchOutTime)) {
+                    return 'Checked In';
+                }
+
+                const timeDifferenceInMilliseconds = punchOutTime - punchInTime;
+                const hours = Math.floor(timeDifferenceInMilliseconds / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDifferenceInMilliseconds / (1000 * 60)) % 60);
+                const seconds = Math.floor((timeDifferenceInMilliseconds / 1000) % 60);
+
+                const timeDiff = `${hours}:${minutes}:${seconds}s`;
+
+                return timeDiff;
+            });
+
+
+            console.log("Resut frm helper ",result)
+            resolve({result,data});
         })
 
     }
