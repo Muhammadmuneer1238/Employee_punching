@@ -4,7 +4,7 @@ const { punchIn, punchOut, punchoutPage, userDetails } = require('../helper/user
 module.exports = {
     indexedDB: (req, res) => {
         res.render('index');
-
+  
     },
     punchinDb: (req, res) => {
 
