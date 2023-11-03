@@ -8,17 +8,23 @@ module.exports = {
     },
     punchinDb: (req, res) => {
 
-        let formData = req.body
-        console.log("formdata", formData)
+        let formData = req.body;
 
+        if (formData && formData.username != '') {
+            console.log("formdata", formData);
 
-        punchIn(formData).then((data) => {
-            console.log("Error from page user", data);
-
-
-            res.json(data)
-
-        })
+            punchIn(formData)
+                .then((data) => {
+                    console.log("Response from punchIn:", data);
+                    res.json(data);
+               })
+                .catch((error) => {
+                    console.error("Error from punchIn:", error);
+                    res.status(500).json({ error: "An error occurred while processing the request." });
+                });
+        } else {
+            res.redirect('/');
+        } 
 
     },
     punchoutDb: (req, res) => {
@@ -57,13 +63,13 @@ module.exports = {
         userDetails().then((activity) => {
             let activities = activity.data
             let time = activity.result
- 
+
             console.log("time period ", activity)
             console.log("data", activities)
             console.log("result", time)
-            res.render('details', {activities, time})
+            res.render('details', { activities, time })
         })
- 
+
     }
 
 } 

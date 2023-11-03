@@ -47,7 +47,6 @@ module.exports = {
           if (foundUser) {
             console.log("Found user with checked status true");
       
-            // Update the document with punchOutTime, completed tasks, and set checked to false
             const punchOutTime = new Date();
             const updatedData = {
               $push: { completed: tasks },
