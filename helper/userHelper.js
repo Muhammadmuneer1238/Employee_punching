@@ -32,44 +32,39 @@ module.exports = {
 
 
     punchOut: async (data) => {
-
         let username = data.username;
         console.log('Username:', username);
         let formData = data.formData;
         let tasks = formData.split('&').map(item => item.split('=')[1]);
-
+      
         return new Promise(async (resolve, reject) => {
-            console.log('Username:', username);
-            console.log('Tasks:', tasks);
-
-            var foundUser = await userModel.findOne({ $and: [{ username: username }, { checked: true }] });
-            console.log("founUser", foundUser)
-
-            if (foundUser) {
-                console.log("Found user with status true");
-
-                // Punchout time setting
-                await userModel.updateOne({ username: username },
-                    {
-                        $push: {
-
-                            completed: tasks
-                        },
-                        $set: {
-                            punchOutTime: new Date(),
-                            checked: false
-                        }
-                    }
-                );
-                console.log("changed")
-
-                resolve(response);
-            } else {
-                console.log("User not found to punchout")
-                resolve()
-            }
+          console.log('Username:', username);
+          console.log('Tasks:', tasks);
+      
+          var foundUser = await userModel.findOne({ username: username, checked: true });
+          console.log("Found user", foundUser);
+      
+          if (foundUser) {
+            console.log("Found user with checked status true");
+      
+            // Update the document with punchOutTime, completed tasks, and set checked to false
+            const punchOutTime = new Date();
+            const updatedData = {
+              $push: { completed: tasks },
+              $set: { punchOutTime, checked: false }
+            };
+      
+            const updateResult = await userModel.updateOne({ _id: foundUser._id }, updatedData);
+            console.log("Document updated:", updateResult);
+      
+            resolve({ response: 'Punch out successful' });
+          } else {
+            console.log("User not found with checked status true to punch out");
+            resolve({ response: 'User not found or not checked in' });
+          }
         });
-    },
+      }
+      ,
 
     punchoutPage: async (data) => {
         let user = data
