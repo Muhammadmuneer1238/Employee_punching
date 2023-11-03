@@ -8,7 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var expressLayout= require('express-ejs-layouts')
 
-
+ 
 var app = express();
 
 // view engine setup
